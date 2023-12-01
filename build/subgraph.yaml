@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: ReferralRegistry
@@ -19,7 +19,7 @@ dataSources:
         - RoleRevoked
       abis:
         - name: ReferralRegistry
-          file: ./abis/ReferralRegistry.json
+          file: ReferralRegistry/abis/ReferralRegistry.json
       eventHandlers:
         - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
           handler: handleRoleAdminChanged
@@ -27,7 +27,7 @@ dataSources:
           handler: handleRoleGranted
         - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
           handler: handleRoleRevoked
-      file: ./src/referral-registry.ts
+      file: ReferralRegistry/ReferralRegistry.wasm
   - kind: ethereum
     name: NftPatreonV1
     network: mumbai
@@ -45,10 +45,11 @@ dataSources:
         - ReferralAllowance
         - SellKey
         - User
-        - SubscribeToken
+        - Token
+        - TokenSubscribe
       abis:
         - name: NftPatreonV1
-          file: ./abis/NftPatreonV1.json
+          file: NftPatreonV1/abis/NftPatreonV1.json
       eventHandlers:
         - event: BuyKey((address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
           handler: handleBuyKey
@@ -58,4 +59,4 @@ dataSources:
           handler: handleReferralAllowance
         - event: SellKey((address,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
           handler: handleSellKey
-      file: ./src/nft-patreon-v-1.ts
+      file: NftPatreonV1/NftPatreonV1.wasm

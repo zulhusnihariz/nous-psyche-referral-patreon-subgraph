@@ -3,6 +3,9 @@
     "ReferralRegistry": {
       "address": "0x56c58955eF14C580A4d525012B4DEB824F53D463",
       "startBlock": 43009261
+    },
+    "NftPatreonV1": {
+      "address": "0xF7Fe3b77b81f1dA83b4F0dEDa6D012DaE17a6DfD"
     }
   }
 }
