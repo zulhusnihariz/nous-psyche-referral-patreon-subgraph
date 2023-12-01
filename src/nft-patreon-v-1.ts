@@ -13,7 +13,7 @@ import {
 
 export function handleBuyKey(event: BuyKeyEvent): void {
   const tokenId = event.params.buy.tokenId.toString()
-  const address = event.params.buy.user.toString()
+  const address = event.params.buy.user.toHexString()
 
   let subscribeToken = SubscribeToken.load(`${tokenId}-${address}`) 
 
@@ -21,8 +21,8 @@ export function handleBuyKey(event: BuyKeyEvent): void {
     let subscribeToken = new SubscribeToken(`${tokenId}-${address}`)
 
     subscribeToken.amount = event.params.buy.amount
-  subscribeToken.tokenId = event.params.buy.tokenId
-    subscribeToken.user = event.params.buy.user.toHexString()
+    subscribeToken.tokenId = event.params.buy.tokenId
+    subscribeToken.user = address
 
     subscribeToken.save()
   } else {
@@ -31,8 +31,8 @@ export function handleBuyKey(event: BuyKeyEvent): void {
   }
 
 
-  let user = User.load(event.params.buy.user.toHexString())
-  if (!user) user = new User(event.params.buy.user.toHexString())
+  let user = User.load(address)
+  if (!user) user = new User(address)
 
   user.save()
 }
@@ -71,7 +71,7 @@ export function handleReferralAllowance(event: ReferralAllowanceEvent): void {
 
 export function handleSellKey(event: SellKeyEvent): void {
   const tokenId = event.params.sell.tokenId.toString()
-  const address = event.params.sell.user.toString()
+  const address = event.params.sell.user.toHexString()
 
   let subscribeToken = SubscribeToken.load(`${tokenId}-${address}`) 
 
