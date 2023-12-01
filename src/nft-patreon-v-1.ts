@@ -1,36 +1,38 @@
+import { BigInt } from "@graphprotocol/graph-ts"
 import {
   BuyKey as BuyKeyEvent,
   ClaimReferral as ClaimReferralEvent,
   ReferralAllowance as ReferralAllowanceEvent,
-  SellKey as SellKeyEvent
+  SellKey as SellKeyEvent,
 } from "../generated/NftPatreonV1/NftPatreonV1"
 import {
-  BuyKey,
   ClaimReferral,
   ReferralAllowance,
-  SellKey,
+  SubscribeToken,
+  User
 } from "../generated/schema"
 
 export function handleBuyKey(event: BuyKeyEvent): void {
- let entity = new BuyKey(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+ let subscribeToken = SubscribeToken.load(event.params.buy.tokenId.toHexString()) 
 
-  entity.buy_user = event.params.buy.user
-  entity.buy_tokenId = event.params.buy.tokenId
-  entity.buy_amount = event.params.buy.amount
-  entity.buy_price = event.params.buy.price
-  entity.buy_protocolFee = event.params.buy.protocolFee
-  entity.buy_nftFee = event.params.buy.nftFee
-  entity.buy_referralFee = event.params.buy.referralFee
-  entity.buy_totalSupply = event.params.buy.totalSupply
-  entity.buy_supplyPerUser = event.params.buy.supplyPerUser
+  if (!subscribeToken){
+    let subscribeToken = new SubscribeToken(event.params.buy.tokenId.toHexString())
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+    subscribeToken.amount = event.params.buy.amount
+    subscribeToken.tokenId = event.params.buy.tokenId
+    subscribeToken.user = event.params.buy.user.toHexString()
 
-  entity.save() 
+    subscribeToken.save()
+  } else {
+    subscribeToken.amount = subscribeToken.amount.plus( event.params.buy.amount)
+    subscribeToken.save()
+  }
+
+
+  let user = User.load(event.params.buy.user.toHexString())
+  if (!user) user = new User(event.params.buy.user.toHexString())
+
+  user.save()
 }
 
 export function handleClaimReferral(event: ClaimReferralEvent): void {
@@ -66,21 +68,10 @@ export function handleReferralAllowance(event: ReferralAllowanceEvent): void {
 }
 
 export function handleSellKey(event: SellKeyEvent): void {
-  let entity = new SellKey(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.sell_user = event.params.sell.user
-  entity.sell_tokenId = event.params.sell.tokenId
-  entity.sell_amount = event.params.sell.amount
-  entity.sell_price = event.params.sell.price
-  entity.sell_protocolFee = event.params.sell.protocolFee
-  entity.sell_nftFee = event.params.sell.nftFee
-  entity.sell_totalSupply = event.params.sell.totalSupply
-  entity.sell_supplyPerUser = event.params.sell.supplyPerUser
+  let subscribeToken = SubscribeToken.load(event.params.sell.tokenId.toHexString())
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  if (subscribeToken) {
+    subscribeToken.amount = subscribeToken.amount.minus(event.params.sell.amount)
+    subscribeToken.save()
+  }
 }

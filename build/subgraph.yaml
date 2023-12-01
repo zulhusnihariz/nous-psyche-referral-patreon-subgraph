@@ -45,8 +45,7 @@ dataSources:
         - ReferralAllowance
         - SellKey
         - User
-        - Token
-        - TokenSubscribe
+        - SubscribeToken
       abis:
         - name: NftPatreonV1
           file: NftPatreonV1/abis/NftPatreonV1.json

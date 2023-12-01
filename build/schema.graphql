@@ -79,23 +79,14 @@ type SellKey @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type Token @entity {
+type SubscribeToken @entity(immutable: true) {
   id: ID!
-  tokenId: BigInt!
-  metadataURI: String!
-  createdAtTimestamp: BigInt!
-  lastBlockNumber: BigInt!
-  owner: User!
-  tokenSubscribe: [TokenSubscribe!]! @derivedFrom(field: "token")
-}
-
-type TokenSubscribe @entity(immutable: true) {
-  id: Bytes!
-  token: Token! @column
-  user: User! @column
+  tokenId: BigInt! 
+  amount: BigInt! 
+  user: User! 
 }
 
 type User @entity(immutable: true) {
   id: ID!
-  tokenSubscribe: [TokenSubscribe!]! @derivedFrom(field: "user")
+  subscribeToken: [SubscribeToken!]! @derivedFrom(field: "user")
 }
