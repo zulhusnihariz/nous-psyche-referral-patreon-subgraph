@@ -12,10 +12,13 @@ import {
 } from "../generated/schema"
 
 export function handleBuyKey(event: BuyKeyEvent): void {
-  let subscribeToken = SubscribeToken.load(event.params.buy.tokenId.toHexString()) 
+  const tokenId = event.params.buy.tokenId.toString()
+  const address = event.params.buy.user.toString()
+
+  let subscribeToken = SubscribeToken.load(`${tokenId}-${address}`) 
 
   if (!subscribeToken){
-    let subscribeToken = new SubscribeToken(event.params.buy.tokenId.toHexString())
+    let subscribeToken = new SubscribeToken(`${tokenId}-${address}`)
 
     subscribeToken.amount = event.params.buy.amount
   subscribeToken.tokenId = event.params.buy.tokenId
@@ -23,7 +26,7 @@ export function handleBuyKey(event: BuyKeyEvent): void {
 
     subscribeToken.save()
   } else {
-    subscribeToken.amount = subscribeToken.amount.plus( event.params.buy.amount)
+    subscribeToken.amount = subscribeToken.amount.plus(event.params.buy.amount)
     subscribeToken.save()
   }
 
@@ -67,7 +70,10 @@ export function handleReferralAllowance(event: ReferralAllowanceEvent): void {
 }
 
 export function handleSellKey(event: SellKeyEvent): void {
-  let subscribeToken = SubscribeToken.load(event.params.sell.tokenId.toHexString())
+  const tokenId = event.params.sell.tokenId.toString()
+  const address = event.params.sell.user.toString()
+
+  let subscribeToken = SubscribeToken.load(`${tokenId}-${address}`) 
 
   if (subscribeToken) {
     subscribeToken.amount = subscribeToken.amount.minus(event.params.sell.amount)
