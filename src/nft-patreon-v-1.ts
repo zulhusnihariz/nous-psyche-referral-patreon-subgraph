@@ -54,7 +54,7 @@ function createTransaction(activity: string, address: Address, amount: BigInt, t
 
     transaction.save()
 
-    handleReferral(address, amount, referrer)
+    if (activity === 'buy') handleReferral(address, amount, referrer)
 
     let user = User.load(address.toHexString())
     if (!user) user = new User(address.toHexString())
