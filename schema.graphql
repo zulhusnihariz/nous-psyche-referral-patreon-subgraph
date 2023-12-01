@@ -29,8 +29,9 @@ type Transaction @entity(immutable:true) {
   blockNumber: BigInt!
 }
 
-type Referral @entity(immutable:true) {
+type Referral @entity {
   id: ID!
+  count: BigInt!
   address: User!
 }
 

@@ -17,6 +17,8 @@ dataSources:
         - ClaimReferral
         - ReferralAllowance
         - Transaction
+        - Referral
+        - User
       abis:
         - name: NftPatreonV1
           file: NftPatreonV1/abis/NftPatreonV1.json
