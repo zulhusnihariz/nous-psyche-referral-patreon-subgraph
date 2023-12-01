@@ -81,7 +81,7 @@ type SellKey @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type SubscribeToken @entity(immutable: true) {
+type SubscribeToken @entity {
   id: ID!
   tokenId: BigInt! 
   amount: BigInt! 
