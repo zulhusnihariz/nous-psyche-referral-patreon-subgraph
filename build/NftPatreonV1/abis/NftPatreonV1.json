@@ -275,6 +275,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "currentReferralCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes",
@@ -549,6 +562,32 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "referralFeePool",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralRegistry",
+    "outputs": [
+      {
+        "internalType": "contract ReferralRegistry",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -562,6 +601,19 @@
       }
     ],
     "name": "sellKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_nftContractAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setNftContractAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -614,6 +666,19 @@
       }
     ],
     "name": "setReferralFeePercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_referralRegistryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setReferralRegistryAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

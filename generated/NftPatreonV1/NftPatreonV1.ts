@@ -242,6 +242,29 @@ export class NftPatreonV1 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  currentReferralCount(): BigInt {
+    let result = super.call(
+      "currentReferralCount",
+      "currentReferralCount():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_currentReferralCount(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "currentReferralCount",
+      "currentReferralCount():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   getBuyPrice(tokenId: BigInt, amount: BigInt): BigInt {
     let result = super.call(
       "getBuyPrice",
@@ -584,6 +607,52 @@ export class NftPatreonV1 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  referralFeePool(): BigInt {
+    let result = super.call(
+      "referralFeePool",
+      "referralFeePool():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_referralFeePool(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "referralFeePool",
+      "referralFeePool():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  referralRegistry(): Address {
+    let result = super.call(
+      "referralRegistry",
+      "referralRegistry():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_referralRegistry(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "referralRegistry",
+      "referralRegistry():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   userToReferralAddress(param0: Address): Address {
     let result = super.call(
       "userToReferralAddress",
@@ -782,6 +851,36 @@ export class SellKeyCall__Outputs {
   }
 }
 
+export class SetNftContractAddressCall extends ethereum.Call {
+  get inputs(): SetNftContractAddressCall__Inputs {
+    return new SetNftContractAddressCall__Inputs(this);
+  }
+
+  get outputs(): SetNftContractAddressCall__Outputs {
+    return new SetNftContractAddressCall__Outputs(this);
+  }
+}
+
+export class SetNftContractAddressCall__Inputs {
+  _call: SetNftContractAddressCall;
+
+  constructor(call: SetNftContractAddressCall) {
+    this._call = call;
+  }
+
+  get _nftContractAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetNftContractAddressCall__Outputs {
+  _call: SetNftContractAddressCall;
+
+  constructor(call: SetNftContractAddressCall) {
+    this._call = call;
+  }
+}
+
 export class SetNftFeePercentageCall extends ethereum.Call {
   get inputs(): SetNftFeePercentageCall__Inputs {
     return new SetNftFeePercentageCall__Inputs(this);
@@ -898,6 +997,36 @@ export class SetReferralFeePercentageCall__Outputs {
   _call: SetReferralFeePercentageCall;
 
   constructor(call: SetReferralFeePercentageCall) {
+    this._call = call;
+  }
+}
+
+export class SetReferralRegistryAddressCall extends ethereum.Call {
+  get inputs(): SetReferralRegistryAddressCall__Inputs {
+    return new SetReferralRegistryAddressCall__Inputs(this);
+  }
+
+  get outputs(): SetReferralRegistryAddressCall__Outputs {
+    return new SetReferralRegistryAddressCall__Outputs(this);
+  }
+}
+
+export class SetReferralRegistryAddressCall__Inputs {
+  _call: SetReferralRegistryAddressCall;
+
+  constructor(call: SetReferralRegistryAddressCall) {
+    this._call = call;
+  }
+
+  get _referralRegistryAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetReferralRegistryAddressCall__Outputs {
+  _call: SetReferralRegistryAddressCall;
+
+  constructor(call: SetReferralRegistryAddressCall) {
     this._call = call;
   }
 }

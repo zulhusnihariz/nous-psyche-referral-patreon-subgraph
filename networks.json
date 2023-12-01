@@ -1,11 +1,10 @@
 {
   "mumbai": {
     "ReferralRegistry": {
-      "address": "0x56c58955eF14C580A4d525012B4DEB824F53D463",
-      "startBlock": 43009261
+      "address": "0xeCe401B1Efdd3cAe85136547936ecD22a8783E42"
     },
     "NftPatreonV1": {
-      "address": "0xF7Fe3b77b81f1dA83b4F0dEDa6D012DaE17a6DfD"
+      "address": "0xeE395330C3E4ecC11E125Ce702FF70395ec70673"
     }
   }
 }

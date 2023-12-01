@@ -26,7 +26,9 @@ type RoleRevoked @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-}type BuyKey @entity(immutable: true) {
+}
+
+type BuyKey @entity(immutable: true) {
   id: Bytes!
   buy_user: Bytes! # address
   buy_tokenId: BigInt! # uint256

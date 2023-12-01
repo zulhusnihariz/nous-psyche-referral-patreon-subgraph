@@ -1,9 +1,8 @@
-import { BigInt } from "@graphprotocol/graph-ts"
 import {
   BuyKey as BuyKeyEvent,
   ClaimReferral as ClaimReferralEvent,
   ReferralAllowance as ReferralAllowanceEvent,
-  SellKey as SellKeyEvent,
+  SellKey as SellKeyEvent
 } from "../generated/NftPatreonV1/NftPatreonV1"
 import {
   ClaimReferral,
@@ -13,13 +12,13 @@ import {
 } from "../generated/schema"
 
 export function handleBuyKey(event: BuyKeyEvent): void {
- let subscribeToken = SubscribeToken.load(event.params.buy.tokenId.toHexString()) 
+  let subscribeToken = SubscribeToken.load(event.params.buy.tokenId.toHexString()) 
 
   if (!subscribeToken){
     let subscribeToken = new SubscribeToken(event.params.buy.tokenId.toHexString())
 
     subscribeToken.amount = event.params.buy.amount
-    subscribeToken.tokenId = event.params.buy.tokenId
+  subscribeToken.tokenId = event.params.buy.tokenId
     subscribeToken.user = event.params.buy.user.toHexString()
 
     subscribeToken.save()
