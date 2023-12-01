@@ -16,8 +16,8 @@ export function handleBuyKey(event: BuyKeyEvent): void {
   createTransaction(
     'buy',
      event.params.buy.user,
-     event.params.buy.tokenId,
      event.params.buy.amount,
+     event.params.buy.tokenId,
      event.block.number,
      event.transaction.hash
   )
@@ -27,8 +27,8 @@ export function handleSellKey(event: SellKeyEvent): void {
   createTransaction(
     'sell',
      event.params.sell.user,
-     event.params.sell.tokenId,
      event.params.sell.amount,
+     event.params.sell.tokenId,
      event.block.number,
      event.transaction.hash
   )
