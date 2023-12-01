@@ -1,3 +1,4 @@
+import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
 import {
   BuyKey as BuyKeyEvent,
   ClaimReferral as ClaimReferralEvent,
@@ -7,34 +8,46 @@ import {
 import {
   ClaimReferral,
   ReferralAllowance,
-  SubscribeToken,
-  User
+  Transaction,
+  User,
 } from "../generated/schema"
 
 export function handleBuyKey(event: BuyKeyEvent): void {
-  const tokenId = event.params.buy.tokenId.toString()
-  const address = event.params.buy.user.toHexString()
+  createTransaction(
+    'buy',
+     event.params.buy.user,
+     event.params.buy.tokenId,
+     event.params.buy.amount,
+     event.block.number,
+     event.transaction.hash
+  )
+}
 
-  let subscribeToken = SubscribeToken.load(`${tokenId}-${address}`) 
+export function handleSellKey(event: SellKeyEvent): void {
+  createTransaction(
+    'sell',
+     event.params.sell.user,
+     event.params.sell.tokenId,
+     event.params.sell.amount,
+     event.block.number,
+     event.transaction.hash
+  )
+}
 
-  if (!subscribeToken){
-    let subscribeToken = new SubscribeToken(`${tokenId}-${address}`)
+function createTransaction(activity: string, address: Address, amount: BigInt, tokenId: BigInt, blockNumber: BigInt, txHash: Bytes): void {
+    let transaction = new Transaction(txHash.toHexString())
 
-    subscribeToken.amount = event.params.buy.amount
-    subscribeToken.tokenId = event.params.buy.tokenId
-    subscribeToken.user = address
+    transaction.activity = activity
+    transaction.address = address.toHexString()
+    transaction.amount = amount
+    transaction.tokenId = tokenId
+    transaction.blockNumber = blockNumber
 
-    subscribeToken.save()
-  } else {
-    subscribeToken.amount = subscribeToken.amount.plus(event.params.buy.amount)
-    subscribeToken.save()
-  }
+    transaction.save()
 
-
-  let user = User.load(address)
-  if (!user) user = new User(address)
-
-  user.save()
+    let user = User.load(address.toHexString())
+    if (!user) user = new User(address.toHexString())
+    user.save()
 }
 
 export function handleClaimReferral(event: ClaimReferralEvent): void {
@@ -67,16 +80,4 @@ export function handleReferralAllowance(event: ReferralAllowanceEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-}
-
-export function handleSellKey(event: SellKeyEvent): void {
-  const tokenId = event.params.sell.tokenId.toString()
-  const address = event.params.sell.user.toHexString()
-
-  let subscribeToken = SubscribeToken.load(`${tokenId}-${address}`) 
-
-  if (subscribeToken) {
-    subscribeToken.amount = subscribeToken.amount.minus(event.params.sell.amount)
-    subscribeToken.save()
-  }
 }

@@ -1,49 +1,3 @@
-type RoleAdminChanged @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  previousAdminRole: Bytes! # bytes32
-  newAdminRole: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RoleGranted @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RoleRevoked @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type BuyKey @entity(immutable: true) {
-  id: Bytes!
-  buy_user: Bytes! # address
-  buy_tokenId: BigInt! # uint256
-  buy_amount: BigInt! # uint256
-  buy_price: BigInt! # uint256
-  buy_protocolFee: BigInt! # uint256
-  buy_nftFee: BigInt! # uint256
-  buy_referralFee: BigInt! # uint256
-  buy_totalSupply: BigInt! # uint256
-  buy_supplyPerUser: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
 type ClaimReferral @entity(immutable: true) {
   id: Bytes!
   user: Bytes! # address
@@ -66,29 +20,22 @@ type ReferralAllowance @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type SellKey @entity(immutable: true) {
-  id: Bytes!
-  sell_user: Bytes! # address
-  sell_tokenId: BigInt! # uint256
-  sell_amount: BigInt! # uint256
-  sell_price: BigInt! # uint256
-  sell_protocolFee: BigInt! # uint256
-  sell_nftFee: BigInt! # uint256
-  sell_totalSupply: BigInt! # uint256
-  sell_supplyPerUser: BigInt! # uint256
+type Transaction @entity(immutable:true) {
+  id: ID!
+  tokenId: BigInt!
+  address: User! 
+  activity: String! # Buy | Sell
+  amount: BigInt! 
   blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
 }
 
-type SubscribeToken @entity {
+type Referral @entity(immutable:true) {
   id: ID!
-  tokenId: BigInt! 
-  amount: BigInt! 
-  user: User! 
+  address: User!
 }
 
 type User @entity(immutable: true) {
   id: ID!
-  subscribeToken: [SubscribeToken!]! @derivedFrom(field: "user")
+  transaction: [Transaction!]! @derivedFrom(field: "address")
+  referral: [Referral!]! @derivedFrom(field: "address")
 }

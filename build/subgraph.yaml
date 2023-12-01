@@ -3,32 +3,6 @@ schema:
   file: schema.graphql
 dataSources:
   - kind: ethereum
-    name: ReferralRegistry
-    network: mumbai
-    source:
-      address: "0xeCe401B1Efdd3cAe85136547936ecD22a8783E42"
-      abi: ReferralRegistry
-      startBlock: 43048683
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - RoleAdminChanged
-        - RoleGranted
-        - RoleRevoked
-      abis:
-        - name: ReferralRegistry
-          file: ReferralRegistry/abis/ReferralRegistry.json
-      eventHandlers:
-        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-          handler: handleRoleAdminChanged
-        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleGranted
-        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleRevoked
-      file: ReferralRegistry/ReferralRegistry.wasm
-  - kind: ethereum
     name: NftPatreonV1
     network: mumbai
     source:
@@ -40,10 +14,9 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - BuyKey
         - ClaimReferral
         - ReferralAllowance
-        - SellKey
+        - Transaction
       abis:
         - name: NftPatreonV1
           file: NftPatreonV1/abis/NftPatreonV1.json
