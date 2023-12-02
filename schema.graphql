@@ -29,10 +29,12 @@ type Transaction @entity(immutable:true) {
   blockNumber: BigInt!
 }
 
-type Referral @entity {
+type Referral @entity(immutable:true) {
   id: ID!
   count: BigInt!
+  activity: String! # Buy | Sell
   address: User!
+  referral: User!
 }
 
 type User @entity(immutable: true) {

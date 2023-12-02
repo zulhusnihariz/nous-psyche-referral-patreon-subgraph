@@ -440,6 +440,19 @@ export class Referral extends Entity {
     this.set("count", Value.fromBigInt(value));
   }
 
+  get activity(): string {
+    let value = this.get("activity");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set activity(value: string) {
+    this.set("activity", Value.fromString(value));
+  }
+
   get address(): string {
     let value = this.get("address");
     if (!value || value.kind == ValueKind.NULL) {
@@ -451,6 +464,19 @@ export class Referral extends Entity {
 
   set address(value: string) {
     this.set("address", Value.fromString(value));
+  }
+
+  get referral(): string {
+    let value = this.get("referral");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set referral(value: string) {
+    this.set("referral", Value.fromString(value));
   }
 }
 

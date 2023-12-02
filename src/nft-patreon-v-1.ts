@@ -8,7 +8,6 @@ import {
 } from "../generated/NftPatreonV1/NftPatreonV1"
 import {
   Referral,
-  ReferralAllowance,
   Transaction,
   User,
 } from "../generated/schema"
@@ -44,63 +43,37 @@ export function handleSellKey(event: SellKeyEvent): void {
 }
 
 function createTransaction(activity: string, address: Address, amount: BigInt, tokenId: BigInt, blockNumber: BigInt, txHash: Bytes, referrer: Address): void {
-    let transaction = new Transaction(txHash.toHexString())
+  let transaction = new Transaction(txHash.toHexString())
 
-    transaction.activity = activity
-    transaction.address = address.toHexString()
-    transaction.amount = amount
-    transaction.tokenId = tokenId
-    transaction.blockNumber = blockNumber
+  transaction.activity = activity
+  transaction.address = address.toHexString()
+  transaction.amount = amount
+  transaction.tokenId = tokenId
+  transaction.blockNumber = blockNumber
 
-    transaction.save()
+  transaction.save()
 
-    if (activity === 'buy') handleReferral(address, amount, referrer)
+  if (activity === 'buy') handleReferral(address, amount, referrer, txHash, activity)
 
-    let user = User.load(address.toHexString())
-    if (!user) user = new User(address.toHexString())
-    user.save()
+  let user = User.load(address.toHexString())
+  if (!user) user = new User(address.toHexString())
+  user.save()
 }
 
-function handleReferral(address: Address, amount: BigInt, referrer: Address): void {
-    let selfReferral = Referral.load(address.toHexString())
-    let referrerReferral = Referral.load(referrer.toHexString())
+function handleReferral(address: Address, amount: BigInt, referralAddress: Address, txHash: Bytes, activity:string): void {
+  let referral = new Referral(txHash.toHexString())
 
-    if (!selfReferral) {
-      selfReferral = new Referral(address.toHexString())
-      selfReferral.count = new BigInt(0)
-      selfReferral.address = address.toHexString()
-      selfReferral.save()
-    }
-
-    if (!referrerReferral) {
-      referrerReferral = new Referral(referrer.toHexString())
-      referrerReferral.count = new BigInt(0)
-      referrerReferral.address = referrer.toHexString()
-    } 
-
-    referrerReferral.count = referrerReferral.count.plus(amount)
-    referrerReferral.save()
+  referral.address = address.toHexString()
+  referral.referral = referralAddress.toHexString()
+  referral.count = amount
+  referral.activity = activity
+  referral.save()
 }
 
 export function handleClaimReferral(event: ClaimReferralEvent): void {
-    let referral = Referral.load(event.params.user.toHexString())
-    if (!referral) referral = new Referral(event.params.user.toHexString())
-
-    referral.count = new BigInt(0)
-    referral.save()
+  handleReferral(event.params.user, new BigInt(0), event.params.user, event.transaction.hash, 'claim')
 }
 
 export function handleReferralAllowance(event: ReferralAllowanceEvent): void {
-  let entity = new ReferralAllowance(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.user = event.params.user
-  entity.referralCode = event.params.referralCode
-  entity.referralAddress = event.params.referralAddress
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  handleReferral(event.params.user, new BigInt(0), event.params.referralAddress, event.transaction.hash, 'allowance')
 }
